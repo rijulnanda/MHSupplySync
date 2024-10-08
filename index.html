@@ -8,56 +8,21 @@
 </head>
 <body>
     <h1>Inventory Management System</h1>
-    
-    <div id="add-item-section">
-        <h2>Add Item</h2>
-        <form id="add-item-form">
-            <label for="item-name">Item Name:</label>
-            <input type="text" id="item-name" name="item-name" required>
+    <body>
+      <div id="form_container">
+        <input placeholder="Email" type="email" id="email"/>
+        <input placeholder="Password" type="password" id="password"/>
+        <input placeholder="Username" type="name" id="username"/>
+        <input placeholder="Say Something 🤣😂" type="text" id="say_something"/>
+        <input placeholder="Favourite Food" type="text" id="favourite_food"/>
+      </div>
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description">
+      <div id="button_container">
+        <button id="submit" onclick="save()"> SUBMIT </button>
+      </div>
 
-            <label for="quantity">Initial Quantity:</label>
-            <input type="number" id="quantity" name="quantity" min="1" required>
-
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location">
-
-            <button type="submit">Add Item</button>
-        </form>
-        <div id="add-confirmation-message"></div>
     </div>
-
-    <script>
-
-        // Add Item functionality
-        document.getElementById('add-item-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const itemName = document.getElementById('item-name').value;
-            const description = document.getElementById('description').value;
-            const quantity = document.getElementById('quantity').value;
-            const location = document.getElementById('location').value;
-
-            // Add item to Firestore
-            db.collection("inventory").add({
-                name: itemName,
-                description: description,
-                quantity: parseInt(quantity),
-                location: location
-            })
-            .then(() => {
-                document.getElementById('add-confirmation-message').innerText = 'Item added successfully!';
-                // Clear form fields
-                document.getElementById('add-item-form').reset();
-            })
-            .catch((error) => {
-                console.error('Error adding item:', error);
-                document.getElementById('add-confirmation-message').innerText = 'Failed to add item.';
-            });
-        });
-    </script>
+  </body>
     <script src="script.js"></script>
 </body>
 </html>
