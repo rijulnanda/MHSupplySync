@@ -2,7 +2,7 @@
 var firebaseConfig = {
   apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
   authDomain: "supplysynctest.firebaseapp.com",
-  databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com",
+  databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com/",
   projectId: "supplysynctest",
   storageBucket: "supplysynctest.appspot.com",
   messagingSenderId: "153630325231",
