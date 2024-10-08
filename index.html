@@ -1,83 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
-    
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <!-- Firebase Firestore (for database functionality) -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <!-- Add other Firebase services as needed -->
-</head>
-<body>
-    <h1>Inventory Management System</h1>
-    
-    <div id="add-item-section">
-        <h2>Add Item</h2>
-        <form id="add-item-form">
-            <label for="item-name">Item Name:</label>
-            <input type="text" id="item-name" name="item-name" required>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Read, Write, Update, Delete</title>
+  </head>
+  <body>
+    <div id="container">
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description">
+      <div id="title_container">
+        <span id="content">
+          <h2 class="typedtext"></h2>
+        </span>
+        <h2 id="sub_header"> with Firebase Database </h2>
+      </div>
 
-            <label for="quantity">Initial Quantity:</label>
-            <input type="number" id="quantity" name="quantity" min="1" required>
+      <div id="form_container">
+        <input placeholder="Email" type="email" id="email"/>
+        <input placeholder="Password" type="password" id="password"/>
+        <input placeholder="Username" type="name" id="username"/>
+        <input placeholder="Say Something 🤣😂" type="text" id="say_something"/>
+        <input placeholder="Favourite Food" type="text" id="favourite_food"/>
+      </div>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location">
+      <div id="button_container">
+        <button id="submit" onclick="save()"> SUBMIT </button>
+      </div>
 
-            <button type="submit">Add Item</button>
-        </form>
-        <div id="add-confirmation-message"></div>
     </div>
+  </body>
 
-    <script>
-        // Your Firebase configuration
-       const firebaseConfig = {
-          apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
-          authDomain: "supplysynctest.firebaseapp.com",
-          projectId: "supplysynctest",
-          storageBucket: "supplysynctest.appspot.com",
-          messagingSenderId: "153630325231",
-          appId: "1:153630325231:web:f5c143dd4fc72fc301de1a",
-          measurementId: "G-Q5FQREPD8H"
-        };
+  <style>
+    /* https://coolors.co/003049-d62828-f77f00-fcbf49-eae2b7 */
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #FCBF49;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    #container {
+      width: 35%;
+      height: 400px;
 
-        // Add Item functionality
-        document.getElementById('add-item-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+      background-color: #fff;
+      border-radius: 10px;
+      outline: 1px solid #fff;
+      outline-offset: 3px;
+      -moz-outline-radius: 10px;
 
-            const itemName = document.getElementById('item-name').value;
-            const description = document.getElementById('description').value;
-            const quantity = document.getElementById('quantity').value;
-            const location = document.getElementById('location').value;
+    }
 
-            // Add item to Firestore
-            db.collection("inventory").add({
-                name: itemName,
-                description: description,
-                quantity: parseInt(quantity),
-                location: location
-            })
-            .then(() => {
-                document.getElementById('add-confirmation-message').innerText = 'Item added successfully!';
-                // Clear form fields
-                document.getElementById('add-item-form').reset();
-            })
-            .catch((error) => {
-                console.error('Error adding item:', error);
-                document.getElementById('add-confirmation-message').innerText = 'Failed to add item.';
-            });
-        });
-    </script>
-    <script src="script.js"></script>
-</body>
+    #title_container {
+      width: 100%;
+      height: 5%;
+
+      text-align: center;
+      float: left;
+      margin: 0;
+
+      color: #003049;
+      text-transform: uppercase;
+      font-family: Verdana;
+      font-size: 12px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
+      margin-bottom: 50px;
+
+      color: #003049;
+    }
+
+
+    #form_container {
+      width: 100%;
+      height: 50%;
+
+      float: left;
+      margin-top: 2px;
+      padding-left: 100px;
+      padding-right: 100px;
+
+      box-sizing: border-box;
+    }
+
+    #form_container * {
+      width: 100%;
+      height: 30px;
+
+      border: none;
+      outline: none;
+      border-left: 2px solid #003049;
+      background-color: #EBF8FF;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      margin-top: 3px;
+      float: left;
+
+    }
+
+    #button_container {
+      width: 100%;
+      height: 5%;
+
+      text-align: center;
+      float: left;
+      margin-bottom: 50px;
+
+      font-family: Verdana;
+
+    }
+
+    #submit {
+      width: 25%;
+      height: 35px;
+
+      background-color: #D62828;
+      border-radius: 5px;
+      font-weight: bold;
+      color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+
+    #content {
+      width: 105px;
+      height: 100%;
+
+      margin: 0;
+      padding: 0;
+      float: left;
+
+      color: #D62828;
+      margin-right: 5px;
+    }
+
+    .typedtext {
+      display: inline-block;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #D62828;
+
+    }
+
+
+  </style>
+  <script>
+    function typingEffect() {
+      const contactTexts = shuffleArray(['Read', 'Write', 'Update', 'Delete']);
+      const typedtext = document.getElementsByClassName("typedtext")[0];
+      let removing = false;
+      let idx = char = 0;
+
+      setInterval(() => { // We define the interval of the typing speed
+
+          // If we do not reach the limit, we insert characters in the html
+          if (char < contactTexts[idx].length) typedtext.innerHTML += contactTexts[idx][char];
+
+          // 15*150ms = time before starting to remove characters
+          if (char == contactTexts[idx].length + 15) removing = true;
+
+          // Removing characters, the last one always
+          if (removing) typedtext.innerHTML = typedtext.innerHTML.substring(0, typedtext.innerHTML.length - 1);
+
+          char++; // Next character
+
+          // When there is nothing else to remove
+          if (typedtext.innerHTML.length === 0) {
+
+              // If we get to the end of the texts we start over
+              if (idx === contactTexts.length - 1) idx = 0
+              else idx++;
+
+              char = 0; // Start the next text by the first character
+              removing = false; // No more removing characters
+          }
+
+      }, 150); // Typing speed, 150 ms
+
+    }
+      typingEffect();
+      function shuffleArray(array) {
+          let currentIndex = array.length,
+              temporaryValue, randomIndex;
+
+          // While there remain elements to shuffle...
+          while (0 !== currentIndex) {
+
+              // Pick a remaining element...
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex -= 1;
+
+              // And swap it with the current element.
+              temporaryValue = array[currentIndex];
+              array[currentIndex] = array[randomIndex];
+              array[randomIndex] = temporaryValue;
+          }
+
+          return array;
+      }
+  </script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="index.js"></script>
+
 </html>
+
+
