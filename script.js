@@ -1,8 +1,16 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import 'firebase/firestore';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 // Your web app's Firebase configuration
-var firebaseConfig = {
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
   apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
   authDomain: "supplysynctest.firebaseapp.com",
-  databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com/",
+  databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com",
   projectId: "supplysynctest",
   storageBucket: "supplysynctest.appspot.com",
   messagingSenderId: "153630325231",
@@ -11,62 +19,36 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// Set database variable
-var database = firebase.database()
+// Initialize Firebase
+//const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-function save() {
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
-  var username = document.getElementById('username').value
-  var say_something = document.getElementById('say_something').value
-  var favourite_food = document.getElementById('favourite_food').value
+// Add Item functionality
+document.getElementById('add-item-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
 
-  database.ref('users/' + username).set({
-    email : email,
-    password : password,
-    username : username,
-    say_something : say_something,
-    favourite_food : favourite_food
-  })
+    const itemName = document.getElementById('item-name').value;
+    const description = document.getElementById('description').value;
+    const quantity = document.getElementById('quantity').value;
+    const location = document.getElementById('location').value;
 
-  alert('Saved')
-}
-
-function get() {
-  var username = document.getElementById('username').value
-
-  var user_ref = database.ref('users/' + username)
-  user_ref.on('value', function(snapshot) {
-    var data = snapshot.val()
-
-    alert(data.email)
-
-  })
-
-}
-
-function update() {
-  var username = document.getElementById('username').value
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
-
-  var updates = {
-    email : email,
-    password : password
-  }
-
-  database.ref('users/' + username).update(updates)
-
-  alert('updated')
-}
-
-function remove() {
-  var username = document.getElementById('username').value
-
-  database.ref('users/' + username).remove()
-
-  alert('deleted')
-}
-
+    // Add item to Firestore
+    db.collection("inventory").add({
+        name: itemName,
+        description: description,
+        quantity: parseInt(quantity),
+        location: location
+    })
+    .then(() => {
+        document.getElementById('add-confirmation-message').innerText = 'Item added successfully!';
+        // Clear form fields
+        document.getElementById('add-item-form').reset();
+    })
+    .catch((error) => {
+        console.error('Error adding item:', error);
+        document.getElementById('add-confirmation-message').innerText = 'Failed to add item.';
+    });
+});
