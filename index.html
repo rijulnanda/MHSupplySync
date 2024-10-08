@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Management</title>
     <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
+    
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <!-- Firebase Firestore (for database functionality) -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <!-- Add other Firebase services as needed -->
 </head>
 <body>
     <h1>Inventory Management System</h1>
+    
     <div id="add-item-section">
         <h2>Add Item</h2>
         <form id="add-item-form">
@@ -28,6 +35,48 @@
         <div id="add-confirmation-message"></div>
     </div>
 
-    <script src="script.js"></script> <!-- Link to your JavaScript -->
+    <script>
+        // Your Firebase configuration
+       const firebaseConfig = {
+          apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
+          authDomain: "supplysynctest.firebaseapp.com",
+          projectId: "supplysynctest",
+          storageBucket: "supplysynctest.appspot.com",
+          messagingSenderId: "153630325231",
+          appId: "1:153630325231:web:f5c143dd4fc72fc301de1a",
+          measurementId: "G-Q5FQREPD8H"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Add Item functionality
+        document.getElementById('add-item-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const itemName = document.getElementById('item-name').value;
+            const description = document.getElementById('description').value;
+            const quantity = document.getElementById('quantity').value;
+            const location = document.getElementById('location').value;
+
+            // Add item to Firestore
+            db.collection("inventory").add({
+                name: itemName,
+                description: description,
+                quantity: parseInt(quantity),
+                location: location
+            })
+            .then(() => {
+                document.getElementById('add-confirmation-message').innerText = 'Item added successfully!';
+                // Clear form fields
+                document.getElementById('add-item-form').reset();
+            })
+            .catch((error) => {
+                console.error('Error adding item:', error);
+                document.getElementById('add-confirmation-message').innerText = 'Failed to add item.';
+            });
+        });
+    </script>
 </body>
 </html>
