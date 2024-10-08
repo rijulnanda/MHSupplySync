@@ -1,13 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
   authDomain: "supplysynctest.firebaseapp.com",
   databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com",
@@ -17,38 +10,22 @@ const firebaseConfig = {
   appId: "1:153630325231:web:f5c143dd4fc72fc301de1a",
   measurementId: "G-Q5FQREPD8H"
 };
-
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase
-//const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// Set database variable
+var database = firebase.database()
 
-// Add Item functionality
-document.getElementById('add-item-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
+function save() {
+  var item = document.getElementById('item').value
+  var quantity = document.getElementById('quantity').value
+  var text = document.getElementById('location').value
 
-    const itemName = document.getElementById('item-name').value;
-    const description = document.getElementById('description').value;
-    const quantity = document.getElementById('quantity').value;
-    const location = document.getElementById('location').value;
+  database.ref('inventory/' + item).set({
+    quantity : quantity,
+    text : location,
+    item : item,
+  })
 
-    // Add item to Firestore
-    db.collection("inventory").add({
-        name: itemName,
-        description: description,
-        quantity: parseInt(quantity),
-        location: location
-    })
-    .then(() => {
-        document.getElementById('add-confirmation-message').innerText = 'Item added successfully!';
-        // Clear form fields
-        document.getElementById('add-item-form').reset();
-    })
-    .catch((error) => {
-        console.error('Error adding item:', error);
-        document.getElementById('add-confirmation-message').innerText = 'Failed to add item.';
-    });
-});
+alert('Saved')
+}
