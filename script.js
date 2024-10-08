@@ -26,6 +26,5 @@ function save() {
     location : location,
     item : item,
   })
-
 alert('Saved')
 }
