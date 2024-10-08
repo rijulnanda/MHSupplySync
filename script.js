@@ -19,11 +19,11 @@ var database = firebase.database()
 function save() {
   var item = document.getElementById('item').value
   var quantity = document.getElementById('quantity').value
-  var text = document.getElementById('location').value
+  var location = document.getElementById('location').value
 
   database.ref('inventory/' + item).set({
     quantity : quantity,
-    text : location,
+    location : location,
     item : item,
   })
 
