@@ -16,18 +16,14 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database()
 
 function save() {
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
-  var username = document.getElementById('username').value
-  var say_something = document.getElementById('say_something').value
-  var favourite_food = document.getElementById('favourite_food').value
+  var item = document.getElementById('item').value
+  var location = document.getElementById('location').value
+  var quantity = document.getElementById('quantity').value
 
   database.ref('users/' + username).set({
-    email : email,
-    password : password,
-    username : username,
-    say_something : say_something,
-    favourite_food : favourite_food
+    item : item,
+    location : location,
+    quantity : quantity
   })
 
   alert('Saved')
