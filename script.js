@@ -1,14 +1,11 @@
-// Import the functions you need from the SDKs you need
-
+// Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyC469sIwL2Ja5fIu4wC4yWotuXdZApNx3s",
-  authDomain: "supplysynctest.firebaseapp.com",
-  databaseURL: "https://supplysynctest-default-rtdb.firebaseio.com",
-  projectId: "supplysynctest",
-  storageBucket: "supplysynctest.appspot.com",
-  messagingSenderId: "153630325231",
-  appId: "1:153630325231:web:f5c143dd4fc72fc301de1a",
-  measurementId: "G-Q5FQREPD8H"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -17,14 +14,55 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database()
 
 function save() {
-  var item = document.getElementById('item').value
-  var quantity = document.getElementById('quantity').value
-  var location = document.getElementById('location').value
+  var email = document.getElementById('email').value
+  var password = document.getElementById('password').value
+  var username = document.getElementById('username').value
+  var say_something = document.getElementById('say_something').value
+  var favourite_food = document.getElementById('favourite_food').value
 
-  database.ref('inventory/' + item).set({
-    quantity : quantity,
-    location : location,
-    item : item,
+  database.ref('users/' + username).set({
+    email : email,
+    password : password,
+    username : username,
+    say_something : say_something,
+    favourite_food : favourite_food
   })
-alert('Saved')
+
+  alert('Saved')
+}
+
+function get() {
+  var username = document.getElementById('username').value
+
+  var user_ref = database.ref('users/' + username)
+  user_ref.on('value', function(snapshot) {
+    var data = snapshot.val()
+
+    alert(data.email)
+
+  })
+
+}
+
+function update() {
+  var username = document.getElementById('username').value
+  var email = document.getElementById('email').value
+  var password = document.getElementById('password').value
+
+  var updates = {
+    email : email,
+    password : password
+  }
+
+  database.ref('users/' + username).update(updates)
+
+  alert('updated')
+}
+
+function remove() {
+  var username = document.getElementById('username').value
+
+  database.ref('users/' + username).remove()
+
+  alert('deleted')
 }
